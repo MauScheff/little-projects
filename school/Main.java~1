@@ -1,0 +1,103 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Main {
+
+    public static void main(String[] args){
+
+	Scanner stdin = new Scanner(System.in);
+	int n = stdin.nextInt();
+      	int nTypes = stdin.nextInt();
+	int[] type = new int[nTypes];
+	
+	for (int j = 0; j < nTypes; j++) {
+	    type[j] = stdin.nextInt();
+	}
+
+	int[] original = type.clone();
+	//      System.out.println("Original" + Arrays.toString(original)); //DEBUG
+	
+	Arrays.sort(type);
+	//	System.out.println("Type" + Arrays.toString(type)); //DEBUG
+
+      	type = reverse(type.clone()); // Clone not needed
+	//	System.out.println("Reversed" + Arrays.toString(type)); //DEBUG
+	
+	int[] newIndex = findNewIndex(original.clone(), type.clone());
+	
+	int k  = solve(type, n);
+	System.out.println("K" + k); // DEBUG
+	//	printResults(getOriginalArray(typeFitsInK, newIndex));
+	
+    }
+  
+  private static int solve(int[] type, int n){
+      System.out.println("Type " + Arrays.toString(type) + "N: " + n); //DEBUG
+      
+      int col = 0;
+      int low = 1;
+      int high = n+1;
+      
+      while (low + 1 < high) {
+	  int k = (high + low) / 2; // Using Binary Search to find K.
+	    
+	  for (int j = 0; j < type.length; j++){
+	      col += type[j] / k;
+	      if (col >= n) {
+		  break;
+	      }
+	  }
+	  
+	  if (col >= n) low = k;
+	  else high = k;
+      }
+      
+      return low;
+  }
+
+    private static void printResults(int[] array){	
+	System.out.println(array[0]);
+	
+	System.out.println("ARRAY:" + Arrays.toString(array));
+	for (int j = 1; j < array.length && array[j] != 0; j++){
+	    for (int k = 0; k < array[j]; k++) {
+		System.out.println(j);
+	    }
+	}
+    }
+
+    private static int[] getOriginalArray(int[] newArray, int[] newIndex) {
+	int[] original = new int[newArray.length];
+	original[0] = newArray[0];
+	//newArray[0] is k
+	for (int j = 1; j < original.length; j++) {
+	    original[j] = newArray[newIndex[j - 1] + 1];
+	}
+
+	return original;
+    }
+
+    private static int[] reverse(int[] array) {
+
+	for (int j = 0; j < array.length / 2; j++) {
+	    int temp  = array[j];
+	    //    System.out.println("Temp: " + temp); // DEBUG
+	    array[j] = array[array.length - 1 - j];
+	    array[array.length - 1 - j] = temp;
+	}
+
+	return array;
+    }
+
+    private static int[] findNewIndex(int[] original, int[] sortedArray){
+
+	for (int j = 0; j < original.length ;j++) {
+	    int k = 0;
+	    for (; sortedArray[k] != original[j]; k++); // Do Nothing
+	    sortedArray[k] = 0;
+	    original[j] = k;
+	}
+
+	return original;
+    }
+}

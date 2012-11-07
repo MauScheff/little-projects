@@ -1,0 +1,17 @@
+public class Main {
+
+    public static void main(String[] args){
+	Scanner stdin = new Scanner(System.in);
+	int n = stdin.nextInt();
+	int nTypes = stdin.nextInt();
+	int[] type = new int[nTpyes];
+  	
+	for (int j = 0; j < nTypes; j++) {
+	    type[j] = stdin.nextInt();
+	}
+	
+	while () {
+	    
+	}
+    }
+}
